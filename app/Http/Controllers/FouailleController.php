@@ -30,26 +30,15 @@ class FouailleController extends Controller
 
         $orders = Order::where('member_id', $user->bde_id)->orderByDesc('date')->paginate($per_page);
 
-        $balance = DB::connection('bde_bdd')->table('members')->where('id', '=', $user->bde_id)->first()->balance;
-
-        global $actual_balance;
-
-        $actual_balance = $balance;
-
-        $datas = $orders->map(function ($order) use ($actual_balance){
-            global $actual_balance;
-            $actual_balance = $order->getFormerBalance($actual_balance);
+        $datas = $orders->map(function ($order) { 
             return [
                 'date' => $order->date,
-                'date_format' => $order->getDate(),
-                'actual_balance' => $actual_balance,
                 'total_price' => $order->price,
                 'amount' => $order->amount,
-                'product' => ($order->product == null) ? null : [
+                'product' => [
                     'name' => $order->product->name,
-                    'type' => $order->product->productType->type,
-                    'unit_price' => strval($order->price / $order->amount),
-                ]
+                    'price' => $order->product->price,
+                ] 
             ];
         });
 

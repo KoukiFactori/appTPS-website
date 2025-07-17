@@ -33,25 +33,14 @@ class Order extends Model
         return $this->belongsTo(Member::class);
     }
 
-    public function getFormerBalance($balance)
-    {
-        return ($balance - $this->price);
-    }
-
     public function getDate()
     {
         $date = Carbon::parse($this->date);
 
-        $date_format = $date->diffForHumans();
-
-        if ($date < now()) {
-            if ($date->isToday()) {
-                $date_format = "Aujourd'hui";
-            } elseif ($date->isYesterday()) {
-                $date_format = "Hier";
-            }
-        }
-
-        return $date_format;
+        return match (true) {
+            $date->isToday() => "Aujourd'hui",
+            $date->isYesterday() => "Hier",
+            default => $date->diffForHumans(),
+        };
     }
 }
