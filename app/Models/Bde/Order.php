@@ -17,20 +17,24 @@ class Order extends Model
     protected $fillable = [
         'product_id',
         'member_id',
+        'cart_id',
         'price',
         'amount',
         'date'
     ];
 
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 
-    public function member(){
+    public function member()
+    {
         return $this->belongsTo(Member::class);
     }
 
-    public function getFormerBalance($balance){
+    public function getFormerBalance($balance)
+    {
         return ($balance - $this->price);
     }
 
@@ -43,7 +47,7 @@ class Order extends Model
         if ($date < now()) {
             if ($date->isToday()) {
                 $date_format = "Aujourd'hui";
-            } else if ($date->isYesterday()) {
+            } elseif ($date->isYesterday()) {
                 $date_format = "Hier";
             }
         }

@@ -12,6 +12,7 @@ use App\Http\Controllers\MPSController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\UserAvatarController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\FouailleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganizationController;
@@ -136,11 +137,26 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         /** =============== Fouaille =============== */
 
-        Route::get('/fouaille', [FouailleController::class, 'show'])
-        ->name('fouaille.show');
+        Route::prefix('fouaille')->group(
+            function () {
+                Route::get('/', [FouailleController::class, 'show'])
+                        ->name('fouaille.show');
 
-        Route::get('/fouaille/balance', [FouailleController::class, 'balance'])
-            ->name('fouaille.balance');
+                Route::get('/balance', [FouailleController::class, 'balance'])
+                    ->name('fouaille.balance');
+
+
+                Route::prefix('carts')->controller(CartController::class)->group(
+                    function () {
+                        Route::get('/', 'index')->name('fouaille.cart.index');
+                        Route::post('/', 'store')->name('fouaille.cart.store');
+                        Route::get('/{id}', 'show')->name('fouaille.cart.show');
+                        Route::delete('/{id}', 'delete')->name('fouaille.cart.delete');
+                        Route::put('/{id}/validate', 'validate')->name('fouaille.cart.validate');
+                    }
+                );
+            }
+        );
 
         /** =============== Catégories =============== */
 
