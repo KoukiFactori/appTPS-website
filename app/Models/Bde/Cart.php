@@ -41,7 +41,8 @@ class Cart extends Model
      * @var array
      */
     protected $attributes = [
-        'state' => '[]',
+        'price' => 0,
+        'status' => 'waiting',
     ];
 
     /**

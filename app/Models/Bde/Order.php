@@ -33,6 +33,10 @@ class Order extends Model
         return $this->belongsTo(Member::class);
     }
 
+    public function cart() {
+        return $this->belongsTo(Cart::class);
+    }
+
     public function getDate()
     {
         $date = Carbon::parse($this->date);

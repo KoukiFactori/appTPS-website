@@ -20,22 +20,25 @@ return new class () extends Migration {
                     'status',
                     allowed: ['waiting', 'payed']
                 );
+
+                $table->unsignedBigInteger('member_id')->nullable();
                 $table
                     ->foreign('member_id')
-                    ->references('bde_id')
+                    ->references('id')
                     ->on('members')
-                    ->onDelete('set null');
+                    ->nullOnDelete();
             }
         );
 
         Schema::connection('bde_bdd')->table(
             'orders',
             function (Blueprint $table) {
+                $table->unsignedBigInteger('cart_id')->nullable();
                 $table
-                    ->foreign('order_id')
+                    ->foreign('cart_id')
                     ->references('id')
                     ->on('carts')
-                    ->onDelete('cascade');
+                    ->cascadeOnDelete();
             }
         );
     }
