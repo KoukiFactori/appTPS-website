@@ -1,0 +1,655 @@
+openapi: 3.0.3
+info:
+  title: 'InsidePSBS API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://127.0.0.1:8000'
+tags:
+  -
+    name: Endpoints
+    description: ''
+paths:
+  /api/register:
+    post:
+      summary: 'Handle an incoming registration request.'
+      operationId: handleAnIncomingRegistrationRequest
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  description: 'Must be at least 3 characters. Must not be greater than 30 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                last_name:
+                  type: string
+                  description: 'Must be at least 3 characters. Must not be greater than 255 characters.'
+                  example: amniihfqcoynlazghdtqt
+                  nullable: false
+                first_name:
+                  type: string
+                  description: 'Must be at least 3 characters. Must not be greater than 255 characters.'
+                  example: qxbajwbpilpmufinllwlo
+                  nullable: false
+                sector:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the sectors table.'
+                  example: 17
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: carolyne.luettgen@example.org
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'Must be at least 3 characters. Must not be greater than 10 characters.'
+                  example: fuudtdsuf
+                  nullable: false
+                admission_year:
+                  type: integer
+                  description: 'Must be at least 2000. Must not be greater than 3000.'
+                  example: 21
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                birth_date:
+                  type: string
+                  description: 'Must be a valid date. Must be a date before <code>today</code>.'
+                  example: '2020-03-14'
+                  nullable: false
+              required:
+                - user_name
+                - last_name
+                - first_name
+                - sector
+                - email
+                - password
+      security: []
+  /api/login:
+    post:
+      summary: 'Login a user'
+      operationId: loginAUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: qkunze@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: 'O[2UZ5ij-e/dl4m{o,'
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/forgot-password:
+    post:
+      summary: 'Handle an incoming password reset link request.'
+      operationId: handleAnIncomingPasswordResetLinkRequest
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: qkunze@example.com
+                  nullable: false
+              required:
+                - email
+      security: []
+  /api/logout:
+    post:
+      summary: 'Logout a user'
+      operationId: logoutAUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/email/verification-notification:
+    post:
+      summary: 'Send a new email verification notification.'
+      operationId: sendANewEmailVerificationNotification
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/password:
+    put:
+      summary: 'Handle an incoming new password request.'
+      operationId: handleAnIncomingNewPasswordRequest
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                former_password:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+              required:
+                - former_password
+                - password
+      security: []
+  /api/user:
+    put:
+      summary: ''
+      operationId: putApiUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_name:
+                  type: string
+                  description: 'Must be at least 3 characters. Must not be greater than 255 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'Must be at least 3 characters. Must not be greater than 10 characters.'
+                  example: amniihfqc
+                  nullable: false
+                sector:
+                  type: integer
+                  description: 'The <code>id</code> of an existing record in the sectors table.'
+                  example: 17
+                  nullable: false
+                admission_year:
+                  type: integer
+                  description: 'Must be at least 2000. Must not be greater than 3000.'
+                  example: 13
+                  nullable: false
+                description:
+                  type: string
+                  description: 'Must not be greater than 100 characters.'
+                  example: 'Amet iste laborum eius est dolor dolores.'
+                  nullable: false
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/user/avatar:
+    post:
+      summary: ''
+      operationId: postApiUserAvatar
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+                  nullable: false
+              required:
+                - avatar
+      security: []
+  /api/user/avatar/default:
+    post:
+      summary: ''
+      operationId: postApiUserAvatarDefault
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                default_link:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                default_name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: amniihfqcoynlazghdtqt
+                  nullable: false
+              required:
+                - default_link
+                - default_name
+      security: []
+  /api/fouaille/carts:
+    post:
+      summary: ''
+      operationId: postApiFouailleCarts
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/fouaille/carts/{cart_id}':
+    delete:
+      summary: ''
+      operationId: deleteApiFouailleCartsCart_id
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: cart_id
+        description: 'The ID of the cart.'
+        example: 17
+        required: true
+        schema:
+          type: integer
+  '/api/fouaille/carts/{cart_id}/checkout':
+    put:
+      summary: ''
+      operationId: putApiFouailleCartsCart_idCheckout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: cart_id
+        description: 'The ID of the cart.'
+        example: 17
+        required: true
+        schema:
+          type: integer
+  /api/categories:
+    post:
+      summary: 'Store the categories for a given post.'
+      operationId: storeTheCategoriesForAGivenPost
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the posts table.'
+                  example: null
+                  nullable: true
+                event_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the events table.'
+                  example: null
+                  nullable: true
+                category_ids:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the category_types table.'
+                  example: null
+                  items:
+                    type: string
+      security: []
+  '/api/event/{id}':
+    delete:
+      summary: ''
+      operationId: deleteApiEventId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the event.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/post/{id}':
+    delete:
+      summary: ''
+      operationId: deleteApiPostId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the post.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/post/{id}/update':
+    post:
+      summary: ''
+      operationId: postApiPostIdUpdate
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  description: ''
+                  example: consequatur
+                  nullable: false
+                category_ids:
+                  type: array
+                  description: 'The <code>id</code> of an existing record in the categories table.'
+                  example: null
+                  items:
+                    type: string
+              required:
+                - body
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the post.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/post/{id}/comment':
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the posts table.'
+                  example: consequatur
+                  nullable: false
+                body:
+                  type: string
+                  description: 'Must be at least 3 characters.'
+                  example: mqeopfuudtdsufvyvddqamniihfqcoynlazghdtqtqxbajwbpilpmufinllwloauydlsmsjury
+                  nullable: false
+                parent_comment_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the post_comments table.'
+                  example: null
+                  nullable: true
+                organization_id:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+              required:
+                - post_id
+                - body
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the post.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/post/{id}/reaction':
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_comment_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the post_comments table.'
+                  example: null
+                  nullable: true
+                reaction_type_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the reaction_types table.'
+                  example: consequatur
+                  nullable: false
+              required:
+                - reaction_type_id
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the post.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/post/{id}/media':
+    post:
+      summary: ''
+      operationId: postApiPostIdMedia
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                medias:
+                  type: array
+                  description: 'Must be a file. Must not be greater than 1000000000 kilobytes.'
+                  items:
+                    type: string
+                    format: binary
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the post.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  '/api/post/{id}/media/destroy':
+    post:
+      summary: ''
+      operationId: postApiPostIdMediaDestroy
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the post.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/contents:
+    post:
+      summary: ''
+      operationId: postApiContents
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'Must not be greater than 255 characters. Must be at least 3 characters.'
+                  example: vmqeopfuudtdsufvyvddqamniihfqcoynlazghdtqtqxbajwbpilpmufinllwloauydlsmsjur
+                  nullable: false
+                body:
+                  type: string
+                  description: 'Must be at least 3 characters.'
+                  example: yvojcybzvrbyickznkygloigmkwxphlvazjrcnfbaqywuxhgjjmzuxjubqouzswiwxtrkimfca
+                  nullable: false
+                organization_id:
+                  type: integer
+                  description: ''
+                  example: 17
+                  nullable: true
+                start_at:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2025-11-17T18:41:04'
+                  nullable: false
+                end_at:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2025-11-17T18:41:04'
+                  nullable: false
+                uploaded_at:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2025-11-17T18:41:04'
+                  nullable: true
+                location:
+                  type: string
+                  description: 'Must not be greater than 255 characters. Must be at least 3 characters.'
+                  example: mqeopfuudtdsufvyvddqamniihfqcoynlazghdtqtqxbajwbpilpmufinllwloauydlsmsjury
+                  nullable: false
+                create_event:
+                  type: string
+                  description: ''
+                  example: '1'
+                  nullable: false
+                  enum:
+                    - '0'
+                    - '1'
+                create_post:
+                  type: string
+                  description: ''
+                  example: '1'
+                  nullable: false
+                  enum:
+                    - '0'
+                    - '1'
+      security: []

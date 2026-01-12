@@ -20,4 +20,4 @@ documentation/site
 .phpactor.json
 compose.yml
 docker/init.sql
-
+.scribe
