@@ -140,23 +140,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::prefix('fouaille')->group(
             function () {
                 Route::get('/', [FouailleController::class, 'show'])
-                        ->name('fouaille.show');
+                        ->name('show');
 
                 Route::get('/balance', [FouailleController::class, 'balance'])
-                    ->name('fouaille.balance');
+                    ->name('balance');
 
 
                 Route::prefix('carts')->controller(CartController::class)->group(
                     function () {
-                        Route::get('/', 'index')->name('fouaille.cart.index');
-                        Route::post('/', 'store')->name('fouaille.cart.store');
-                        Route::get('/{id}', 'show')->name('fouaille.cart.show');
-                        Route::delete('/{id}', 'delete')->name('fouaille.cart.delete');
-                        Route::put('/{id}/validate', 'validate')->name('fouaille.cart.validate');
+                        Route::get('/', 'index')->name('index');
+                        Route::post('/', 'store')->name('store');
+                        Route::get('/{cart}', 'show')->name('show');
+                        Route::delete('/{cart}', 'delete')->name('delete');
+                        Route::put('/{cart}/checkout', 'checkout')->name('checkout');
                     }
-                );
+                )->name('carts');
             }
-        );
+        )->name('fouaille');
 
         /** =============== Catégories =============== */
 

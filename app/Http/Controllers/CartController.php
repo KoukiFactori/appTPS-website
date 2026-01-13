@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bde\Cart;
+use App\Models\Bde\Member;
 use App\Models\Bde\Order;
 use App\Models\Bde\Product;
 use Illuminate\Http\Request;
@@ -12,18 +13,16 @@ class CartController extends Controller
 {
     public function index()
     {
-        $carts = Cart::all();
-        $carts->load('orders');
+        $carts = Cart::all()
+            ->load('orders');
 
         return [
             'data' => $carts
         ];
     }
 
-    public function show(string $id)
+    public function show(Cart $cart)
     {
-        $cart = Cart::where('id', $id)->first();
-
         return [
             'data' => $cart,
         ];
@@ -33,27 +32,30 @@ class CartController extends Controller
     {
         $user = $request->user();
 
-        $payload = $request->json()->all();
-
-        $cart = Cart::create();
-
-        foreach ($payload as $order) {
-            $product = Product::where('id', $order['product_id'])->first();
-            $price = $order['price'];
-            $amount = $order['amount'];
-
-            Order::create(
-                [
-                    'amount' => $amount,
-                    'product_id' => $product->id,
-
-                    'member_id' => $user->bde_id,
-                    'cart_id' => $cart->id,
-
-                    // This field SHOULD NOT be specified by user but it's ok for now
-                    'price' => $price,
-                ]
-            );
+        $payload = array_map(
+            function ($line)
+            {
+                return [
+                    'product' => Product::where('id', $line['product_id'])->first(),
+                    'amount' => $line['amount'], // Unchanged
+                ];
+            },
+            $request->all()
+        );
+        
+        $cart = Cart::create(["member_id" => $user->bde_id]);
+        
+        foreach ($payload as $line)
+        {
+            $cart->price += $line['amount'] * $line['product']->price; // Compute final price as we insert the order item
+            
+            Order::create([
+                'product_id' => $line['product']->id,
+                'amount' => $line['amount'],
+                'price' => $line['amount'] * $line['product']->price,
+                'member_id' => $user->bde_id,
+                'cart_id' => $cart->id
+            ]);
         }
 
         return [
@@ -61,8 +63,19 @@ class CartController extends Controller
         ];
     }
 
-    public function delete(): Response
+    public function delete(Cart $cart): Response
     {
-        return response('Not Implemented', 501);
+        $cart->delete();
+        return \response(status: 204);
+    }
+
+    public function checkout(Cart $cart) {
+        $user = $cart->client;        
+
+        $cart->status = "payed";
+        $user->balance += $cart->price; // Cart has a negative price
+
+        $user->save();
+        $cart->save();
     }
 }
